@@ -9,7 +9,6 @@
 #define __CURT_ENV_H__
 
 #include "common.h"
-#include <array>
 
 using namespace std;
 
@@ -25,7 +24,6 @@ namespace curt {
 
 	public:
 		Environment() throw(string);
-		Environment(const Environment& other) = delete;
 		~Environment();
 
 		cl_platform_id const& platform() const;
@@ -41,11 +39,7 @@ namespace curt {
 		void finish();
 		void finish(DeviceType device);
 
-		Environment& operator=(Environment const& other) = delete;
-
 	private:
-
-		Log logger;
 
 		cl_platform_id _platform;
 		cl_context _context;
