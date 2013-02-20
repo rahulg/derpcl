@@ -35,7 +35,7 @@ namespace curt {
 
 		Environment const& env() const { return _env; }
 		MemoryType const& type() const { return _m_type; }
-		cl_mem memory() const { return _block; }
+		cl_mem block() const { return _block; }
 		size_t size() const { return _size; }
 		Tdata* data() { return _data; }
 
