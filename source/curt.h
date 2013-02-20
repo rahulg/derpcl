@@ -10,5 +10,9 @@
 
 #include "log.h"
 #include "env.h"
+#include "program.h"
+#include "kernel.h"
+#include "buffer.h"
+#include "image.h"
 
 #endif
