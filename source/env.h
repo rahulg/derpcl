@@ -14,15 +14,10 @@ using namespace std;
 
 namespace curt {
 
-	enum class DeviceType : int {
-		CPU = 0,
-		GPU = 1,
-		Accel = 2
-	};
-
 	class Environment {
 
 	public:
+
 		Environment() throw(string);
 		~Environment();
 
