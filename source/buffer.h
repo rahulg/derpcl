@@ -27,7 +27,7 @@ namespace curt {
 			_size = count * sizeof(Tdata);
 			_block = clCreateBuffer(_env.context(), (cl_mem_flags)_m_type, _size, NULL, &error);
 			if (error != CL_SUCCESS) {
-				throw string("Error creating buffer: ") + to_string(error);
+				throw string("Error creating buffer: ") + cl_err_to_string(error);
 			}
 
 		}
@@ -36,7 +36,8 @@ namespace curt {
 
 		Environment const& env() const { return _env; }
 		MemoryType const& type() const { return _m_type; }
-		cl_mem block() const { return _block; }
+		cl_mem block() { return _block; }
+		cl_mem* block_ptr() { return &_block; }
 		size_t size() const { return _size; }
 		Tdata* data() { return _data; }
 
@@ -46,7 +47,7 @@ namespace curt {
 			
 			_data = (Tdata*)clEnqueueMapBuffer(_env.queue(), _block, CL_TRUE, (cl_map_flags)_m_type, 0, _size, 0, NULL, NULL, &error);
 			if (error != CL_SUCCESS) {
-				throw string("Error mapping buffer: ") + to_string(error);
+				throw string("Error mapping buffer: ") + cl_err_to_string(error);
 			}
 		}
 

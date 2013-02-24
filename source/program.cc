@@ -63,7 +63,7 @@ void Program::_fromSrc(cl_device_id device, string& filename) throw(string) {
 	_program = clCreateProgramWithSource(_env.context(), 1, (const char**)&prog_buf, &prog_size, &error);
 	if (error < 0)
 	{
-		throw string("Failed to create program from source: ") + to_string(error);
+		throw string("Failed to create program from source: ") + cl_err_to_string(error);
 	}
 
 	munmap(prog_buf, prog_size);
@@ -88,7 +88,7 @@ void Program::_fromSrc(cl_device_id device, string& filename) throw(string) {
 		free(log_buf);
 #endif
 
-		throw string("Failed to build program: ") + to_string(error);
+		throw string("Failed to build program: ") + cl_err_to_string(error);
 
 	}
 
@@ -127,7 +127,7 @@ void Program::_fromBin(cl_device_id device, string& filename) throw(string) {
 		free(log_buf);
 #endif
 
-		throw string("Failed to build program: ") + to_string(error);
+		throw string("Failed to build program: ") + cl_err_to_string(error);
 
 	}
 

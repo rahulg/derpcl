@@ -39,21 +39,19 @@ namespace curt {
 
 			error = clSetKernelArg(_kernel, position, sizeof(T), &argument);
 			if (error != CL_SUCCESS) {
-				throw string("Error setting kernel argument: ") + to_string(error);
+				throw string("Error setting kernel argument: ") + cl_err_to_string(error);
 			}
 
 		}
 
 		template <class Tdata>
-		void setArgument(int position, Buffer<Tdata> const& argument) {
+		void setArgumentBuffer(int position, Buffer<Tdata>& argument) {
 
 			cl_int error;
 
-			cl_mem* blk_ptr = new cl_mem;
-			*blk_ptr = argument.block();
-			error = clSetKernelArg(_kernel, position, sizeof(cl_mem), blk_ptr);
+			error = clSetKernelArg(_kernel, position, sizeof(cl_mem), argument.block_ptr());
 			if (error != CL_SUCCESS) {
-				throw string("Error setting kernel argument: ") + to_string(error);
+				throw string("Error setting kernel argument: ") + cl_err_to_string(error);
 			}
 
 		}
@@ -65,7 +63,7 @@ namespace curt {
 
 		// 	error = clSetKernelArg(_kernel, position, sizeof(cl_mem), &argument.block());
 		// 	if (error != CL_SUCCESS) {
-		// 		throw string("Error setting kernel argument: ") + to_string(error);
+		// 		throw string("Error setting kernel argument: ") + cl_err_to_string(error);
 		// 	}
 
 		// }

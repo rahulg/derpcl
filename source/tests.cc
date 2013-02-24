@@ -52,8 +52,8 @@ int main() {
 		Buffer<int> buf2(env, MemoryType::WriteOnly, 1);
 
 		cout << "Testing curt::Kernel::setArgument<int>(Buffer)." << endl;
-		krn1.setArgument<int>(2, buf1);
-		krn2.setArgument<int>(2, buf2);
+		krn1.setArgumentBuffer<int>(2, buf1);
+		krn2.setArgumentBuffer<int>(2, buf2);
 
 		cout << "Testing curt::Kernel::run." << endl;
 		krn1.run(1);

@@ -8,7 +8,7 @@ Kernel::Kernel(Program& program, string name) throw(string) : _program(program) 
 
 	_kernel = clCreateKernel(_program.program(), name.c_str(), &error);
 	if (error != CL_SUCCESS) {
-		throw string("Error creating kernel: ") + to_string(error);
+		throw string("Error creating kernel: ") + cl_err_to_string(error);
 	}
 
 }
@@ -60,7 +60,7 @@ cl_event Kernel::_run(cl_command_queue queue, size_t n_dim, size_t* dimensions, 
 
 	error = clEnqueueNDRangeKernel(queue, _kernel, n_dim, nullptr, dimensions, nullptr, n_wait, wait_event, &run_event);
 	if (error != CL_SUCCESS) {
-		throw string("Error running kernel: ") + to_string(error);
+		throw string("Error running kernel: ") + cl_err_to_string(error);
 	}
 
 	return run_event;

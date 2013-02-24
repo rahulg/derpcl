@@ -7,25 +7,29 @@ Environment::Environment() throw(string) {
 
 	error = clGetPlatformIDs(1, &_platform, NULL);
 	if (error != CL_SUCCESS) {
-		throw string("OpenCL platform error: ") + to_string(error);
+		throw string("OpenCL platform error: ") + cl_err_to_string(error);
 	}
 
 	_num_devices = 0;
+	cl_device_id dev_id[3];
 
 	error = clGetDeviceIDs(_platform, CL_DEVICE_TYPE_CPU, 1, &_devices[0], NULL);
 	if (error == CL_SUCCESS) {
+		dev_id[_num_devices] = _devices[0];
 		++_num_devices;
-		_has_device[static_cast<int>(DeviceType::CPU)] = true;
+		_has_device[0] = true;
 	}
 	error = clGetDeviceIDs(_platform, CL_DEVICE_TYPE_GPU, 1, &_devices[1], NULL);
 	if (error == CL_SUCCESS) {
+		dev_id[_num_devices] = _devices[1];
 		++_num_devices;
-		_has_device[static_cast<int>(DeviceType::GPU)] = true;
+		_has_device[1] = true;
 	}
 	error = clGetDeviceIDs(_platform, CL_DEVICE_TYPE_ACCELERATOR, 1, &_devices[2], NULL);
 	if (error == CL_SUCCESS) {
+		dev_id[_num_devices] = _devices[2];
 		++_num_devices;
-		_has_device[static_cast<int>(DeviceType::Accel)] = true;
+		_has_device[2] = true;
 	}
 
 	if (_num_devices == 0)
@@ -33,26 +37,30 @@ Environment::Environment() throw(string) {
 		throw string("Unable to find any OpenCL devices.");
 	}
 
-	_context = clCreateContext(NULL, _num_devices, _devices, NULL, NULL, &error);
+	_context = clCreateContext(NULL, _num_devices, dev_id, NULL, NULL, &error);
 	if (error != CL_SUCCESS)
 	{
-		throw string("OpenCL context error: ") + to_string(error);
+		throw string("OpenCL context error: ") + cl_err_to_string(error);
 	}
 
-	for (int i = 0; i < _num_devices; ++i)
+	for (int i = 0; i < 2; ++i)
 	{
-		_queues[i] = clCreateCommandQueue(_context, _devices[i], 0, &error);
-		if (error != CL_SUCCESS)
-		{
-			throw string("OpenCL command queue error: ") + to_string(error);
+		if (_has_device[i]) {
+			_queues[i] = clCreateCommandQueue(_context, _devices[i], 0, &error);
+			if (error != CL_SUCCESS)
+			{
+				throw string("OpenCL command queue error: ") + cl_err_to_string(error);
+			}
 		}
 	}
 }
 
 Environment::~Environment(){
-	for (int i = 0; i < _num_devices; ++i)
+	for (int i = 0; i < 2; ++i)
 	{
-		clReleaseCommandQueue(_queues[i]);
+		if (_has_device[i]) {
+			clReleaseCommandQueue(_queues[i]);
+		}
 	}
 	clReleaseContext(_context);
 }
