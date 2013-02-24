@@ -2,7 +2,7 @@
 
 using namespace curt;
 
-bool defaultBinary = false;
+bool Program::defaultBinary = false;
 
 Program::Program(Environment& env, string filename, bool binary) throw(string) : _env(env) {
 	if (binary) {

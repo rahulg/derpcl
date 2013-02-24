@@ -49,7 +49,9 @@ namespace curt {
 
 			cl_int error;
 
-			error = clSetKernelArg(_kernel, position, sizeof(cl_mem), &argument.block());
+			cl_mem* blk_ptr = new cl_mem;
+			*blk_ptr = argument.block();
+			error = clSetKernelArg(_kernel, position, sizeof(cl_mem), blk_ptr);
 			if (error != CL_SUCCESS) {
 				throw string("Error setting kernel argument: ") + to_string(error);
 			}
