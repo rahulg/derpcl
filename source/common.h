@@ -45,6 +45,20 @@ namespace derpcl {
 		ReadWrite = CL_MAP_READ | CL_MAP_WRITE
 	};
 
+	enum class Channels : cl_channel_order
+	{
+		Single = CL_R,
+		RGBA = CL_RGBA,
+		Luminance = CL_LUMINANCE
+	};
+
+	enum class PixelFormat : cl_channel_type
+	{
+		Unsigned8 = CL_UNSIGNED_INT8,
+		UnsignedNorm8 = CL_UNORM_INT8,
+		Float = CL_FLOAT
+	};
+
 	string cl_err_to_string(cl_int error);
 
 }
