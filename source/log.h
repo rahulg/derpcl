@@ -1,12 +1,12 @@
 /*!
- * @file curt/logging.h
+ * @file derpcl/logging.h
  * Logging class.
  *
  * @author Rahul A. G.
  */
 
-#ifndef __CURT_LOG_H__
-#define __CURT_LOG_H__
+#ifndef __DERPCL_LOG_H__
+#define __DERPCL_LOG_H__
 
 #include <string>
 #include <iostream>
@@ -14,7 +14,7 @@
 
 using namespace std;
 
-namespace curt {
+namespace derpcl {
 
 	class Log {
 

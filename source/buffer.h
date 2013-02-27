@@ -1,19 +1,19 @@
 /*!
- * @file curt/buffer.h
- * Definiton of the curt buffer class.
+ * @file derpcl/buffer.h
+ * Definiton of the derpcl buffer class.
  *
  * @author Rahul A. G.
  */
 
-#ifndef __CURT_BUFFER_H__
-#define __CURT_BUFFER_H__
+#ifndef __DERPCL_BUFFER_H__
+#define __DERPCL_BUFFER_H__
 
 #include "common.h"
 #include "env.h"
 
 using namespace std;
 
-namespace curt {
+namespace derpcl {
 
 	template <class Tdata>
 	class Buffer {

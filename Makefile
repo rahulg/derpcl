@@ -17,7 +17,7 @@ CXXFLAGS?=-std=c++11
 LIBS=
 
 AR=ar
-ARCHIVE=libcurt.a
+ARCHIVE=libderpcl.a
 
 SYSTEM=$(shell uname -s)
 ifeq ($(SYSTEM), Linux)
@@ -45,14 +45,14 @@ debug: $(OBJ)
 
 rtest: CXXFLAGS += -O3
 rtest: all $(TEST_O)
-	$(CXX) $(CXXFLAGS) $(OPT) $(TEST_O) -o $(TEST_X) -L. -lcurt $(LIBS)
+	$(CXX) $(CXXFLAGS) $(OPT) $(TEST_O) -o $(TEST_X) -L. -lderpcl $(LIBS)
 	./$(TEST_X)
 	cat testfile
 	-rm testfile
 
 dtest: CXXFLAGS += -O0 -DDEBUG -g
 dtest: debug $(TEST_O)
-	$(CXX) $(CXXFLAGS) $(OPT) $(TEST_O) -o $(TEST_X) -L. -lcurt $(LIBS)
+	$(CXX) $(CXXFLAGS) $(OPT) $(TEST_O) -o $(TEST_X) -L. -lderpcl $(LIBS)
 	./$(TEST_X)
 	cat testfile
 	-rm testfile

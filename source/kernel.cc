@@ -1,6 +1,6 @@
 #include "kernel.h"
 
-using namespace curt;
+using namespace derpcl;
 
 Kernel::Kernel(Program& program, string name) throw(string) : _program(program) {
 

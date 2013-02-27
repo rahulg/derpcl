@@ -1,12 +1,12 @@
 /*!
- * @file curt/curt.h
- * Standard include header for curt.
+ * @file derpcl/derpcl.h
+ * Standard include header for derpcl.
  *
  * @author Rahul A. G.
  */
 
-#ifndef __CURT_H__
-#define __CURT_H__
+#ifndef __DERPCL_H__
+#define __DERPCL_H__
 
 #include "log.h"
 #include "env.h"

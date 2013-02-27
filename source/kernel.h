@@ -1,12 +1,12 @@
 /*!
- * @file curt/kernel.h
- * Definiton of the curt kernel class.
+ * @file derpcl/kernel.h
+ * Definiton of the derpcl kernel class.
  *
  * @author Rahul A. G.
  */
 
-#ifndef __CURT_KERNEL_H__
-#define __CURT_KERNEL_H__
+#ifndef __DERPCL_KERNEL_H__
+#define __DERPCL_KERNEL_H__
 
 #include "common.h"
 #include "env.h"
@@ -23,7 +23,7 @@
 
 using namespace std;
 
-namespace curt {
+namespace derpcl {
 
 	class Kernel {
 

@@ -1,6 +1,6 @@
 #include "program.h"
 
-using namespace curt;
+using namespace derpcl;
 
 bool Program::defaultBinary = false;
 

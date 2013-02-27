@@ -1,6 +1,6 @@
 #include "log.h"
 
-using namespace curt;
+using namespace derpcl;
 using namespace std;
 
 string Log::_filename;

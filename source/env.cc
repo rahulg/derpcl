@@ -1,6 +1,6 @@
 #include "env.h"
 
-using namespace curt;
+using namespace derpcl;
 
 Environment::Environment() throw(string) {
 	cl_int error;

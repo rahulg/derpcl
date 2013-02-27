@@ -1,18 +1,18 @@
 /*!
- * @file curt/env.h
- * Definiton of the curt environment class.
+ * @file derpcl/env.h
+ * Definiton of the derpcl environment class.
  *
  * @author Rahul A. G.
  */
 
-#ifndef __CURT_ENV_H__
-#define __CURT_ENV_H__
+#ifndef __DERPCL_ENV_H__
+#define __DERPCL_ENV_H__
 
 #include "common.h"
 
 using namespace std;
 
-namespace curt {
+namespace derpcl {
 
 	class Environment {
 

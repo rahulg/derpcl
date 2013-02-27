@@ -1,8 +1,8 @@
 #include <iostream>
-#include "curt.h"
+#include "derpcl.h"
 
 using namespace std;
-using namespace curt;
+using namespace derpcl;
 
 Environment env;
 
@@ -10,12 +10,12 @@ int main() {
 
 	Log logger;
 
-	cout << "Testing curt::Log to console." << endl;
+	cout << "Testing derpcl::Log to console." << endl;
 	logger.toConsole();
 	logger << "Logging to console: YAY.";
 	logger.endl();
 
-	cout << R"(Testing curt::Log to "testfile".)" << endl;
+	cout << R"(Testing derpcl::Log to "testfile".)" << endl;
 	logger.toFile("testfile");
 	logger << "Logging to file: YAY.";
 	logger.endl();
@@ -24,7 +24,7 @@ int main() {
 
 	try {
 
-		cout << "Testing curt::Environment." << endl;
+		cout << "Testing derpcl::Environment." << endl;
 		env.setDefaultDevice(DeviceType::GPU);
 		cout << "Platform ID: " << env.platform() << endl;
 		cout << "CPU Device " << env.device(DeviceType::CPU) << endl;
@@ -33,33 +33,33 @@ int main() {
 		cout << R"("Finish"ing)" << endl;
 		env.finish();
 
-		cout << "Testing curt::Program." << endl;
+		cout << "Testing derpcl::Program." << endl;
 		Program pgm(env, "source/tests.cl");
 
-		cout << "Testing curt::Kernel." << endl;
+		cout << "Testing derpcl::Kernel." << endl;
 		Kernel krn1(pgm, "test1");
 		Kernel krn2(pgm, "test2");
 
-		cout << "Testing curt::Kernel::setArgument<int>." << endl;
+		cout << "Testing derpcl::Kernel::setArgument<int>." << endl;
 		krn1.setArgument<int>(0, 5);
 		krn1.setArgument<int>(1, 5);
 
 		krn2.setArgument<int>(0, 5);
 		krn2.setArgument<int>(1, 5);
 
-		cout << "Testing curt::Buffer." << endl;
+		cout << "Testing derpcl::Buffer." << endl;
 		Buffer<int> buf1(env, MemoryType::WriteOnly, 1);
 		Buffer<int> buf2(env, MemoryType::WriteOnly, 1);
 
-		cout << "Testing curt::Kernel::setArgument<int>(Buffer)." << endl;
+		cout << "Testing derpcl::Kernel::setArgument<int>(Buffer)." << endl;
 		krn1.setArgumentBuffer<int>(2, buf1);
 		krn2.setArgumentBuffer<int>(2, buf2);
 
-		cout << "Testing curt::Kernel::run." << endl;
+		cout << "Testing derpcl::Kernel::run." << endl;
 		krn1.run(1);
 		krn2.run(1);
 
-		cout << "Testing curt::Buffer::map." << endl;
+		cout << "Testing derpcl::Buffer::map." << endl;
 		buf1.map(MapMode::Read);
 		buf2.map(MapMode::Read);
 

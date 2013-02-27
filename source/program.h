@@ -1,12 +1,12 @@
 /*!
- * @file curt/program.h
- * Definiton of the curt program class.
+ * @file derpcl/program.h
+ * Definiton of the derpcl program class.
  *
  * @author Rahul A. G.
  */
 
-#ifndef __CURT_PROGRAM_H__
-#define __CURT_PROGRAM_H__
+#ifndef __DERPCL_PROGRAM_H__
+#define __DERPCL_PROGRAM_H__
 
 #include "common.h"
 #include "env.h"
@@ -20,7 +20,7 @@
 
 using namespace std;
 
-namespace curt {
+namespace derpcl {
 
 	class Program {
 
