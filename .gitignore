@@ -1,3 +1,4 @@
 build
 libderpcl.a
 test
+/*.h

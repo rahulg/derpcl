@@ -32,16 +32,18 @@ TEST_X=test
 SRC=$(filter-out source/tests.cc, $(wildcard source/*.cc))
 OBJ=$(SRC:source/%.cc=build/%.o)
 HDR=$(wildcard source/*.h)
+LOC_HDR=$(HDR:source/%.h=%.h)
 
 .PHONY: all debug unit clean
 
 all: CXXFLAGS += -O3
-all: $(OBJ)
-	$(AR) sr $(ARCHIVE) $^
+all: $(OBJ) $(LOC_HDR)
+	$(AR) sr $(ARCHIVE) $(OBJ)
+
 
 debug: CXXFLAGS += -O0 -DDEBUG -g
-debug: $(OBJ)
-	$(AR) sr $(ARCHIVE) $^
+debug: $(OBJ) $(LOC_HDR)
+	$(AR) sr $(ARCHIVE) $(OBJ)
 
 rtest: CXXFLAGS += -O3
 rtest: all $(TEST_O)
@@ -64,5 +66,8 @@ unit: $(OBJ) unit_test.o
 build/%.o: source/%.cc $(HDR)
 	$(CXX) $(CXXFLAGS) $(OPT) -c $< -o $@
 
+%.h: source/%.h
+	cp $< $@
+
 clean:
-	-rm -f build/* $(ARCHIVE) $(TEST_X)
+	-rm -f build/* $(ARCHIVE) $(TEST_X) $(LOC_HDR)
