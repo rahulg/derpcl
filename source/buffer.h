@@ -36,8 +36,7 @@ namespace derpcl {
 
 		Environment const& env() const { return _env; }
 		MemoryType const& type() const { return _m_type; }
-		cl_mem block() { return _block; }
-		cl_mem* block_ptr() { return &_block; }
+		cl_mem const& block() { return _block; }
 		size_t size() const { return _size; }
 		Tdata* data() { return _data; }
 
@@ -45,7 +44,7 @@ namespace derpcl {
 			
 			cl_int error;
 			
-			_data = (Tdata*)clEnqueueMapBuffer(_env.queue(), _block, CL_TRUE, (cl_map_flags)_m_type, 0, _size, 0, NULL, NULL, &error);
+			_data = (Tdata*)clEnqueueMapBuffer(_env.queue(), _block, CL_TRUE, static_cast<cl_map_flags>(map_mode), 0, _size, 0, NULL, NULL, &error);
 			if (error != CL_SUCCESS) {
 				throw string("Error mapping buffer: ") + cl_err_to_string(error);
 			}

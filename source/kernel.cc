@@ -17,6 +17,17 @@ Kernel::~Kernel() {
 	clReleaseKernel(_kernel);
 }
 
+void Kernel::setArgumentImage(int position, Image& argument) {
+
+	cl_int error;
+
+	error = clSetKernelArg(_kernel, position, sizeof(cl_mem), &(argument.block()));
+	if (error != CL_SUCCESS) {
+		throw string("Error setting image argument: ") + cl_err_to_string(error);
+	}
+
+}
+
 cl_event Kernel::run(size_t units) throw(string) {
 	return _run(_program.environment().queue(), 1, &units, 0, nullptr);
 }

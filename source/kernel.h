@@ -32,6 +32,8 @@ namespace derpcl {
 		Kernel(Program& program, string name) throw(string);
 		~Kernel();
 
+		cl_kernel const& kernel() { return _kernel; }
+
 		template <class T>
 		void setArgument(int position, T const& argument) throw(string) {
 
@@ -49,24 +51,14 @@ namespace derpcl {
 
 			cl_int error;
 
-			error = clSetKernelArg(_kernel, position, sizeof(cl_mem), argument.block_ptr());
+			error = clSetKernelArg(_kernel, position, sizeof(cl_mem), &(argument.block()));
 			if (error != CL_SUCCESS) {
-				throw string("Error setting kernel argument: ") + cl_err_to_string(error);
+				throw string("Error setting buffer argument: ") + cl_err_to_string(error);
 			}
 
 		}
 
-		// template <class Tdata>
-		// void setArgument(int position, Image<Tdata> const& argument) {
-
-		// 	cl_int error;
-
-		// 	error = clSetKernelArg(_kernel, position, sizeof(cl_mem), &argument.block());
-		// 	if (error != CL_SUCCESS) {
-		// 		throw string("Error setting kernel argument: ") + cl_err_to_string(error);
-		// 	}
-
-		// }
+		void setArgumentImage(int position, Image& argument);
 
 		cl_event run(size_t units) throw(string);
 		cl_event run(size_t x, size_t y) throw(string);

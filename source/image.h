@@ -32,8 +32,7 @@ namespace derpcl {
 		Channels const& channels() const;
 		PixelFormat const& format() const;
 		dim_t const& dimensions() const;
-		cl_mem block();
-		cl_mem* block_ptr();
+		cl_mem const& block();
 		size_t size() const;
 		void* data();
 
