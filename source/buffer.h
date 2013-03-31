@@ -44,23 +44,39 @@ namespace derpcl {
 			
 			cl_int error;
 			
-			_data = (Tdata*)clEnqueueMapBuffer(_env.queue(), _block, CL_TRUE, static_cast<cl_map_flags>(map_mode), 0, _size, 0, NULL, NULL, &error);
+			_data = (Tdata*)clEnqueueMapBuffer(_env.txQueue(), _block, CL_TRUE, static_cast<cl_map_flags>(map_mode), 0, _size, 0, NULL, NULL, &error);
 			if (error != CL_SUCCESS) {
 				throw string("Error mapping buffer: ") + cl_err_to_string(error);
 			}
 		}
 
-		void unmap() { clEnqueueUnmapMemObject(_env.queue(), _block, _data, 0, NULL, NULL); }
+		void unmap() {
+			cl_event unmap_ev;
+			clEnqueueUnmapMemObject(_env.txQueue(), _block, _data, 0, NULL, &unmap_ev);
+			clWaitForEvents(1, &unmap_ev);
+		}
 
-		cl_event queueRead(Tdata* destination) {
+		cl_event queueRead(Tdata* destination, bool blocking = false) {
 			cl_event ev;
-			clEnqueueReadBuffer(_env.queue(), _block, CL_FALSE, 0, _size, destination, 0, NULL, &ev);
+			clEnqueueReadBuffer(_env.txQueue(), _block, blocking ? CL_TRUE : CL_FALSE, 0, _size, destination, 0, NULL, &ev);
 			return ev;
 		}
 
-		cl_event queueWrite(Tdata* source) {
+		cl_event queueWrite(Tdata* source, bool blocking = false) {
 			cl_event ev;
-			clEnqueueWriteBuffer(_env.queue(), _block, CL_FALSE, 0, _size, source, 0, NULL, &ev);
+			clEnqueueWriteBuffer(_env.txQueue(), _block, blocking ? CL_TRUE : CL_FALSE, 0, _size, source, 0, NULL, &ev);
+			return ev;
+		}
+
+		cl_event queueRead(Tdata* destination, cl_event wait_event, bool blocking = false) {
+			cl_event ev;
+			clEnqueueReadBuffer(_env.txQueue(), _block, blocking ? CL_TRUE : CL_FALSE, 0, _size, destination, 1, &wait_event, &ev);
+			return ev;
+		}
+
+		cl_event queueWrite(Tdata* source, cl_event wait_event, bool blocking = false) {
+			cl_event ev;
+			clEnqueueWriteBuffer(_env.txQueue(), _block, blocking ? CL_TRUE : CL_FALSE, 0, _size, source, 1, &wait_event, &ev);
 			return ev;
 		}
 

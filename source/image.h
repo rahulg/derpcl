@@ -25,6 +25,7 @@ namespace derpcl {
 	public:
 
 		Image(Environment& env, MemoryType m_type, Channels channels, PixelFormat pix_fmt, dim_t dimensions) throw(string);
+		Image(Image const& other) throw(string);
 		~Image();
 
 		Environment const& env() const;
@@ -42,7 +43,10 @@ namespace derpcl {
 		cl_event queueRead(void* destination);
 		cl_event queueWrite(void* source);
 
-		Image const& operator=(Image const& other) = delete;
+		cl_event queueRead(void* destination, cl_event wait_event);
+		cl_event queueWrite(void* source, cl_event wait_event);
+
+		Image const& operator=(Image const& other) throw(string);
 
 	private:
 

@@ -41,6 +41,10 @@ Image::Image(Environment& env, MemoryType m_type, Channels channels, PixelFormat
 
 }
 
+Image::Image(Image const& other) throw(string) : _env(other._env) {
+	*this = other;
+}
+
 Image::~Image() {
 	 clReleaseMemObject(_block);
 }
@@ -91,17 +95,56 @@ void Image::map(MapMode map_mode) {
 }
 
 void Image::unmap() {
-	clEnqueueUnmapMemObject(_env.queue(), _block, _data, 0, NULL, NULL);
+	cl_event unmap_ev;
+	clEnqueueUnmapMemObject(_env.queue(), _block, _data, 0, NULL, &unmap_ev);
+	clWaitForEvents(1, &unmap_ev);
 }
 
 cl_event Image::queueRead(void* destination) {
 	cl_event ev;
-	clEnqueueReadImage(_env.queue(), _block, CL_FALSE, _origin, _endpoint, 0, 0, destination, 0, NULL, &ev);
+	clEnqueueReadImage(_env.txQueue(), _block, CL_FALSE, _origin, _endpoint, 0, 0, destination, 0, NULL, &ev);
 	return ev;
 }
 
 cl_event Image::queueWrite(void* source) {
 	cl_event ev;
-	clEnqueueWriteImage(_env.queue(), _block, CL_FALSE, _origin, _endpoint, 0, 0, source, 0, NULL, &ev);
+	clEnqueueWriteImage(_env.txQueue(), _block, CL_FALSE, _origin, _endpoint, 0, 0, source, 0, NULL, &ev);
 	return ev;
+}
+
+cl_event Image::queueRead(void* destination, cl_event wait_event) {
+	cl_event ev;
+	clEnqueueReadImage(_env.txQueue(), _block, CL_FALSE, _origin, _endpoint, 0, 0, destination, 1, &wait_event, &ev);
+	return ev;
+}
+
+cl_event Image::queueWrite(void* source, cl_event wait_event) {
+	cl_event ev;
+	clEnqueueWriteImage(_env.txQueue(), _block, CL_FALSE, _origin, _endpoint, 0, 0, source, 1, &wait_event, &ev);
+	return ev;
+}
+
+Image const& Image::operator=(Image const& other) throw(string) {
+
+	_env = other._env;
+	_m_type = other._m_type;
+	_channels = other._channels;
+	_pix_fmt = other._pix_fmt;
+	_dimensions = other._dimensions;
+	_format = other._format;
+	_desc = other._desc;
+	
+	_origin[0] = _origin[1] = _origin[2] = 0;
+	_endpoint[0] = _dimensions.width;
+	_endpoint[1] = _dimensions.height;
+	_endpoint[2] = 1;
+
+	_size = other._size;
+	_data = other._data;
+
+	_block = other._block;
+	clRetainMemObject(_block);
+
+	return *this;
+
 }

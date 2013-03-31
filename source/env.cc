@@ -2,7 +2,7 @@
 
 using namespace derpcl;
 
-Environment::Environment() throw(string) {
+Environment::Environment(DeviceType dev_type) throw(string) {
 	cl_int error;
 
 	error = clGetPlatformIDs(1, &_platform, NULL);
@@ -51,8 +51,16 @@ Environment::Environment() throw(string) {
 			{
 				throw string("OpenCL command queue error: ") + cl_err_to_string(error);
 			}
+
+			_txqueues[i] = clCreateCommandQueue(_context, _devices[i], 0, &error);
+			if (error != CL_SUCCESS)
+			{
+				throw string("OpenCL command queue error: ") + cl_err_to_string(error);
+			}
 		}
 	}
+
+	setDefaultDevice(dev_type);
 }
 
 Environment::~Environment(){
@@ -81,12 +89,20 @@ cl_command_queue const& Environment::queue() const {
 	return queue(_default_device);
 }
 
+cl_command_queue const& Environment::txQueue() const {
+	return txQueue(_default_device);
+}
+
 cl_device_id const& Environment::device(DeviceType device) const {
 	return _devices[static_cast<int>(device)];
 }
 
 cl_command_queue const& Environment::queue(DeviceType device) const {
 	return _queues[static_cast<int>(device)];
+}
+
+cl_command_queue const& Environment::txQueue(DeviceType device) const {
+	return _txqueues[static_cast<int>(device)];
 }
 
 void Environment::setDefaultDevice(DeviceType device) throw(string) {
