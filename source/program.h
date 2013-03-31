@@ -29,6 +29,8 @@ namespace derpcl {
 
 		Program(Environment& env, string file, bool binary = defaultBinary) throw(string);
 		Program(Environment& env, DeviceType device, string file, bool binary = defaultBinary) throw(string);
+		Program(Environment& env, string file, char *opts, bool binary = defaultBinary) throw(string);
+		Program(Environment& env, DeviceType device, string file, char *opts, bool binary = defaultBinary) throw(string);
 		~Program();
 
 		cl_program program();
@@ -38,8 +40,8 @@ namespace derpcl {
 
 	private:
 
-		void _fromSrc(cl_device_id device, string& filename) throw(string);
-		void _fromBin(cl_device_id device, string& filename) throw(string);
+		void _fromSrc(cl_device_id device, string& filename, char *opts = NULL) throw(string);
+		void _fromBin(cl_device_id device, string& filename, char *opts = NULL) throw(string);
 
 		Environment& _env;
 

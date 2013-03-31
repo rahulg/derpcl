@@ -46,13 +46,13 @@ Environment::Environment(DeviceType dev_type) throw(string) {
 	for (int i = 0; i < 2; ++i)
 	{
 		if (_has_device[i]) {
-			_queues[i] = clCreateCommandQueue(_context, _devices[i], 0, &error);
+			_queues[i] = clCreateCommandQueue(_context, _devices[i], CL_QUEUE_PROFILING_ENABLE, &error);
 			if (error != CL_SUCCESS)
 			{
 				throw string("OpenCL command queue error: ") + cl_err_to_string(error);
 			}
 
-			_txqueues[i] = clCreateCommandQueue(_context, _devices[i], 0, &error);
+			_txqueues[i] = clCreateCommandQueue(_context, _devices[i], CL_QUEUE_PROFILING_ENABLE, &error);
 			if (error != CL_SUCCESS)
 			{
 				throw string("OpenCL command queue error: ") + cl_err_to_string(error);

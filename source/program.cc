@@ -20,6 +20,22 @@ Program::Program(Environment& env, DeviceType device, string filename, bool bina
 	}
 }
 
+Program::Program(Environment& env, string filename, char *opts, bool binary) throw(string) : _env(env) {
+	if (binary) {
+		_fromBin(_env.device(), filename, opts);
+	} else {
+		_fromSrc(_env.device(), filename, opts);
+	}
+}
+
+Program::Program(Environment& env, DeviceType device, string filename, char *opts,bool binary) throw(string) : _env(env) {
+	if (binary) {
+		_fromBin(_env.device(device), filename, opts);
+	} else {
+		_fromSrc(_env.device(device), filename, opts);
+	}
+}
+
 Program::~Program() {
 	clReleaseProgram(_program);
 }
@@ -32,7 +48,7 @@ Environment& Program::environment() {
 	return _env;
 }
 
-void Program::_fromSrc(cl_device_id device, string& filename) throw(string) {
+void Program::_fromSrc(cl_device_id device, string& filename, char *opts) throw(string) {
 
 	struct stat prog_stat;
 	int prog_fd = -1;
@@ -69,12 +85,6 @@ void Program::_fromSrc(cl_device_id device, string& filename) throw(string) {
 	munmap(prog_buf, prog_size);
 	close(prog_fd);
 
-#ifdef CL_RELAXED_MATH
-	char opts[] = "-cl-fast-relaxed-math";
-#else
-	char opts[] = "";
-#endif
-
 	error = clBuildProgram(_program, 0, NULL, opts, NULL, NULL);
 	if (error < 0)
 	{
@@ -94,7 +104,7 @@ void Program::_fromSrc(cl_device_id device, string& filename) throw(string) {
 
 }
 
-void Program::_fromBin(cl_device_id device, string& filename) throw(string) {
+void Program::_fromBin(cl_device_id device, string& filename, char *opts) throw(string) {
 
 #ifdef DEBUG
 	char *log_buf;
@@ -107,12 +117,6 @@ void Program::_fromBin(cl_device_id device, string& filename) throw(string) {
 	char* fn = new char[fn_len+1];
 	strcpy(fn, filename.c_str());
 	_program = clCreateProgramWithBinary(_env.context(), 1, &device, &fn_len, (const unsigned char**)(&fn), NULL, &error);
-
-#ifdef CL_RELAXED_MATH
-	char opts[] = "-cl-fast-relaxed-math";
-#else
-	char opts[] = "";
-#endif
 
 	error = clBuildProgram(_program, 0, NULL, opts, NULL, NULL);
 	if (error < 0)
