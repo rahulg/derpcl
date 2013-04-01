@@ -48,16 +48,20 @@ debug: $(OBJ) $(LOC_HDR)
 rtest: CXXFLAGS += -O4
 rtest: all $(TEST_O)
 	$(CXX) $(CXXFLAGS) $(OPT) $(TEST_O) -o $(TEST_X) -L. -lderpcl $(LIBS)
+	cp source/*.cl ./
 	./$(TEST_X)
 	cat testfile
-	-rm testfile
+	-rm -f testfile
+	-rm -f *.cl
 
 dtest: CXXFLAGS += -O0 -DDEBUG -g
 dtest: debug $(TEST_O)
 	$(CXX) $(CXXFLAGS) $(OPT) $(TEST_O) -o $(TEST_X) -L. -lderpcl $(LIBS)
+	cp source/*.cl ./
 	./$(TEST_X)
 	cat testfile
-	-rm testfile
+	-rm -f testfile
+	-rm -f *.cl
 
 unit: CXXFLAGS += -O0 -DDEBUG -g
 unit: $(OBJ) unit_test.o

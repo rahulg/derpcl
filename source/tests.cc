@@ -1,5 +1,5 @@
 #include <iostream>
-#include "derpcl.h"
+#include "cl.h"
 
 using namespace std;
 using namespace derpcl;
