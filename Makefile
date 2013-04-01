@@ -36,7 +36,7 @@ LOC_HDR=$(HDR:source/%.h=%.h)
 
 .PHONY: all debug unit clean
 
-all: CXXFLAGS += -O3
+all: CXXFLAGS += -O4
 all: $(OBJ) $(LOC_HDR)
 	$(AR) sr $(ARCHIVE) $(OBJ)
 
@@ -45,7 +45,7 @@ debug: CXXFLAGS += -O0 -DDEBUG -g
 debug: $(OBJ) $(LOC_HDR)
 	$(AR) sr $(ARCHIVE) $(OBJ)
 
-rtest: CXXFLAGS += -O3
+rtest: CXXFLAGS += -O4
 rtest: all $(TEST_O)
 	$(CXX) $(CXXFLAGS) $(OPT) $(TEST_O) -o $(TEST_X) -L. -lderpcl $(LIBS)
 	./$(TEST_X)
